@@ -1,0 +1,13 @@
+diff --git a/examples/avro_producer.py b/examples/avro_producer.py
+index 12c60a4..9c20375 100644
+--- a/examples/avro_producer.py
++++ b/examples/avro_producer.py
+@@ -137,7 +137,7 @@ def main(args):
+                         favorite_color=user_favorite_color,
+                         favorite_number=user_favorite_number)
+             producer.produce(topic=topic,
+-                             key=string_serializer(str(uuid4())),
++                             key=string_serializer(str(uuid4()), SerializationContext(topic, MessageField.KEY)),
+                              value=avro_serializer(user, SerializationContext(topic, MessageField.VALUE)),
+                              on_delivery=delivery_report)
+         except KeyboardInterrupt:

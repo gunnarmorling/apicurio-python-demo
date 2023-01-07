@@ -1,0 +1,30 @@
+version: '2'
+services:
+  zookeeper:
+    image: quay.io/debezium/zookeeper:2.1
+    ports:
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
+  kafka:
+    image: quay.io/debezium/kafka:2.1
+    ports:
+     - 9092:9092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2181
+  apicurio:
+    image: apicurio/apicurio-registry-mem:2.4.1.Final
+    ports:
+     - 8080:8080
+    links:
+     - zookeeper
+  # Get a shell via docker-compose run --rm python
+  python:
+    image: decodable-demos/apicurio-python:1.0
+    build: .
+    volumes:
+      - .:/opt/apicurio-python-demo
+    command: bash
+
